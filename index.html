@@ -30,27 +30,39 @@
     <div id="addItemModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Agregar Nuevo Item</h2>
-            <form id="addItemForm">
-                <label for="icon">Icono:</label>
-                <div class="icon-select">
-                    <div class="icon-grid">
-                        <div class="icon-option" data-icon="fas fa-check-circle"><i class="fas fa-check-circle"></i></div>
-                        <div class="icon-option" data-icon="fas fa-bell"><i class="fas fa-bell"></i></div>
-                        <div class="icon-option" data-icon="fas fa-briefcase"><i class="fas fa-briefcase"></i></div>
-                        <div class="icon-option" data-icon="fas fa-exclamation-triangle"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="icon-option" data-icon="fas fa-exclamation"><i class="fas fa-exclamation"></i></div>
-                        <div class="icon-option" data-icon="fas fa-bullhorn"><i class="fas fa-bullhorn"></i></div> <!-- Icono de megáfono -->
-                        <div class="icon-option" data-icon="fas fa-chart-bar"><i class="fas fa-chart-bar"></i></div> <!-- Icono de gráfico de barras -->
-                    </div>
+            <div class="modal-body">
+                <div class="form-container">
+                    <h2>Agregar Nuevo Item</h2>
+                    <form id="addItemForm">
+                        <label for="icon">Icono:</label>
+                        <div class="icon-select">
+                            <div class="icon-grid">
+                                <div class="icon-option" data-icon="fas fa-check-circle"><i class="fas fa-check-circle"></i></div>
+                                <div class="icon-option" data-icon="fas fa-bell"><i class="fas fa-bell"></i></div>
+                                <div class="icon-option" data-icon="fas fa-briefcase"><i class="fas fa-briefcase"></i></div>
+                                <div class="icon-option" data-icon="fas fa-exclamation-triangle"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div class="icon-option" data-icon="fas fa-exclamation"><i class="fas fa-exclamation"></i></div>
+                                <div class="icon-option" data-icon="fas fa-bullhorn"><i class="fas fa-bullhorn"></i></div> <!-- Icono de megáfono -->
+                                <div class="icon-option" data-icon="fas fa-chart-bar"><i class="fas fa-chart-bar"></i></div> <!-- Icono de gráfico de barras -->
+                                <div class="icon-option" data-icon="fa-solid fa-calendar-days"><i class="fa-solid fa-calendar-days"></i></div> <!-- Nuevo icono -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="icon" name="icon">
+                        <label for="title">Título:</label>
+                        <input type="text" id="title" name="title" placeholder="Título del aviso" required maxlength="100" class="short-input">
+                        <label for="description">Descripción:</label>
+                        <textarea id="description" name="description" placeholder="Descripción del aviso" required maxlength="512" class="large-textarea"></textarea>
+                        <span id="charCount">0/512</span> <!-- Contador de caracteres -->
+                        <button type="submit">Agregar</button>
+                    </form>
                 </div>
-                <input type="hidden" id="icon" name="icon">
-                <label for="title">Título:</label>
-                <input type="text" id="title" name="title" placeholder="Título del aviso" required>
-                <label for="description">Descripción:</label>
-                <input type="text" id="description" name="description" placeholder="Descripción del aviso" required>
-                <button type="submit">Agregar</button>
-            </form>
+                <div class="item-list-container">
+                    <h2>Lista de Items</h2>
+                    <ul id="itemList">
+                        <!-- Items will be dynamically inserted here -->
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -163,22 +163,6 @@ body {
     color: white; /* Ensure the icon color is white */
 }
 
-.delete-btn {
-    position: absolute;
-    top: 5px; /* Adjusted to be closer to the top */
-    right: 5px; /* Adjusted to be closer to the right */
-    background: none;
-    border: none;
-    color: #ffffff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 2;
-}
-
-.delete-btn:hover {
-    color: #ff0000;
-}
-
 /* Modal styles */
 .modal {
     display: none; /* Hidden by default */
@@ -198,8 +182,8 @@ body {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
+    width: 90%; /* Increase the width */
+    max-width: 1000px; /* Increase the max-width */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: absolute;
@@ -208,23 +192,20 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+.modal-body {
+    display: flex;
+    justify-content: space-between; /* Ensure the form and list are side by side */
+    width: 100%;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.form-container {
+    width: 50%; /* Ensure the form takes up half the modal */
 }
 
 .modal form {
     display: flex;
     flex-direction: column;
+    width: 100%; /* Ensure the form takes up the full width */
 }
 
 .modal form label {
@@ -232,14 +213,26 @@ body {
 }
 
 .modal form input,
-.modal form select {
+.modal form select,
+.modal form textarea {
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
+.modal form .short-input {
+    width: 93%; /* Make the title input shorter */
+}
+
+.modal form .large-textarea {
+    width: 93%;
+    height: 150px; /* Make the textarea larger */
+    resize: vertical; /* Allow vertical resizing */
+}
+
 .modal form button {
+    width: 98%;
     margin-top: 20px;
     padding: 10px;
     font-size: 1rem;
@@ -257,6 +250,31 @@ body {
     transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
+.item-list-container {
+    width: 45%; /* Ensure the list takes up the remaining space */
+    margin-left: 20px;
+}
+
+.item-list-container h2 {
+    margin-top: 0;
+}
+
+.item-list-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.item-list-container li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.item-list-container li input[type="checkbox"] {
+    margin-right: 10px;
+}
+
 /* Estilos para mostrar iconos en el select */
 .icon-select {
     display: flex;
@@ -266,7 +284,7 @@ body {
 
 .icon-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr); /* 8 columns */
     gap: 10px;
 }
 
@@ -290,4 +308,11 @@ body {
 
 .icon-option i {
     font-size: 1.5rem;
+}
+
+#charCount {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #afadad;
 }
