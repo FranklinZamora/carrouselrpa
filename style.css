@@ -1,0 +1,293 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    flex-direction: column;
+}
+
+.carousel {
+    position: relative;
+    width: 80%;
+    max-width: 1300px; /* Increase the max-width */
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px; /* Increase padding */
+    margin-top: 40px; /* Add margin to create space for the button */
+    background: linear-gradient(135deg, #00008b 0%, #0000cd 50%, #00008b 100%); /* Degradado en tonos de azul oscuro */
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Increase height */
+    overflow: hidden;
+}
+
+.carousel-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex; /* Show all items by default */
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Fade transition */
+}
+
+.carousel-item.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.carousel-content {
+    text-align: center;
+    color: #333;
+    padding: 10px; /* Adjust padding to fit the new size */
+    position: relative; /* Ensure the delete button is positioned relative to this container */
+}
+
+.carousel-icon {
+    font-size: 3.5rem; /* Adjust icon size to fit the new size */
+    margin-bottom: 20px; /* Increase margin-bottom to create more space between the icon and the title */
+    color: #ffffff; /* Change icon color */
+}
+
+.carousel-title {
+    font-size: 2rem; /* Adjust font size to fit the new size */
+    color: #ffffff;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada para el texto */
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out; /* Transición para el efecto 3D y color */
+    margin-top: -5px; /* Move the title a bit higher */
+}
+
+.carousel-description {
+    font-size: 1.2rem; /* Adjust font size to fit the new size */
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada para el texto */
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out; /* Transición para el efecto 3D y color */
+    margin-top: -15px; /* Move the description a bit higher */
+}
+
+.carousel-content:hover .carousel-title,
+.carousel-content:hover .carousel-description {
+    transform: scale(1.1); /* Efecto 3D al pasar el ratón */
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    color: rgb(255, 255, 255); /* Change color to white */
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-control:hover {
+    color: #f0f0f0; /* Change color on hover */
+}
+
+.carousel-control.prev {
+    left: 0px; /* Increase left position to move the arrow further away */
+}
+
+.carousel-control.next {
+    right: 0px; /* Increase right position to move the arrow further away */
+}
+
+.carousel-control i {
+    font-size: 2rem; /* Adjust font size */
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.carousel-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.carousel-indicator.active {
+    background-color: #0072ff;
+}
+
+.add-item-btn {
+    position: absolute; /* Position absolute to be outside the carousel container */
+    top: 10px; /* Position at the top */
+    right: 10px; /* Position at the right */
+    padding: 10px;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #160e85; /* Change background color */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s; /* Transition for background color and transform */
+}
+
+.add-item-btn:hover {
+    background-color: darkblue;
+    transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+.add-item-btn i {
+    color: white; /* Ensure the icon color is white */
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px; /* Adjusted to be closer to the top */
+    right: 5px; /* Adjusted to be closer to the right */
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.delete-btn:hover {
+    color: #ff0000;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal form label {
+    margin-top: 10px;
+}
+
+.modal form input,
+.modal form select {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal form button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: blue;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s; /* Transition for background color and transform */
+}
+
+.modal form button:hover {
+    background-color: darkblue;
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Estilos para mostrar iconos en el select */
+.icon-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.icon-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.icon-option:hover,
+.icon-option.active {
+    background-color: #0072ff;
+    color: white;
+}
+
+.icon-option i {
+    font-size: 1.5rem;
+}
