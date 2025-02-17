@@ -242,40 +242,8 @@ body {
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.3s; /* Transition for background color and transform */
 }
 
-.modal form button:hover {
-    background-color: darkblue;
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
-}
-
-.item-list-container {
-    width: 45%; /* Ensure the list takes up the remaining space */
-    margin-left: 20px;
-}
-
-.item-list-container h2 {
-    margin-top: 0;
-}
-
-.item-list-container ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.item-list-container li {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.item-list-container li input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-/* Estilos para mostrar iconos en el select */
 .icon-select {
     display: flex;
     flex-wrap: wrap;
@@ -283,8 +251,8 @@ body {
 }
 
 .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr); /* 8 columns */
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -300,9 +268,13 @@ body {
     transition: background-color 0.3s;
 }
 
-.icon-option:hover,
-.icon-option.active {
+.icon-option:hover {
     background-color: #0072ff;
+    color: white;
+}
+
+.icon-option.selected {
+    background-color: #0072ff; /* Change background color to red */
     color: white;
 }
 
@@ -315,4 +287,135 @@ body {
     margin-top: 5px;
     font-size: 0.8rem;
     color: #afadad;
+}
+
+.item-list-container {
+    width: 45%; /* Ensure the item list takes up less space */
+    height: 500px; /* Set a larger fixed height for the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    position: relative; /* Position relative for slider controls */
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+#itemList {
+    list-style-type: none;
+    padding: 0;
+    display: flex; /* Display items in a column */
+    flex-direction: column;
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+#itemList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Add margin between items */
+    min-height: 30px; /* Ensure items have a minimum height */
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #0072ff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.switch-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.switch-container label {
+    color: rgb(0, 0, 0);
+    margin-right: 10px;
+}
+
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    background-color: #f44336; /* Red */
+    color: white;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+}
+
+.notification .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
 }

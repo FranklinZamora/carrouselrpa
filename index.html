@@ -11,7 +11,7 @@
     <button class="add-item-btn" onclick="openModal()">
         <i class="fas fa-edit"></i>
     </button>
-    <div class="carousel">
+    <div class="carousel" id="carousel">
         <div class="carousel-inner">
             <!-- Items will be dynamically inserted here -->
         </div>
@@ -29,7 +29,7 @@
     <!-- Modal -->
     <div id="addItemModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close" onclick="closeModal()"><i class="fas fa-check"></i></span>
             <div class="modal-body">
                 <div class="form-container">
                     <h2>Agregar Nuevo Item</h2>
@@ -53,7 +53,9 @@
                         <label for="description">Descripción:</label>
                         <textarea id="description" name="description" placeholder="Descripción del aviso" required maxlength="512" class="large-textarea"></textarea>
                         <span id="charCount">0/512</span> <!-- Contador de caracteres -->
-                        <button type="submit">Agregar</button>
+                        <div class="button-container">
+                            <button type="submit" class="blue-btn">Guardar cambios</button>
+                        </div>
                     </form>
                 </div>
                 <div class="item-list-container">
@@ -63,8 +65,18 @@
                     </ul>
                 </div>
             </div>
+            <div class="switch-container">
+                <label for="toggleCarousel">Mostrar Carrusel:</label>
+                <label class="switch">
+                    <input type="checkbox" id="toggleCarousel" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
 
     <script src="carr.js"></script>
 </body>

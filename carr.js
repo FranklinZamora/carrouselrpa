@@ -1,7 +1,9 @@
 const apiUrl = 'https://172.30.4.145:3000/slider-notificaciones/getnotificaciones';
 const addApiUrl = 'https://172.30.4.145:3000/slider-notificaciones/addnotificaciones';
 const updateApiUrl = 'https://172.30.4.145:3000/slider-notificaciones/updatenotificaciones';
+const deleteApiUrl = 'https://172.30.4.145:3000/slider-notificaciones/deletenotificaciones';
 let currentIndex = 0;
+let selectedCount = 0;
 
 async function fetchNotifications() {
     try {
@@ -9,6 +11,7 @@ async function fetchNotifications() {
         const data = await response.json();
         updateCarousel(data);
         updateItemList(data); // Update the item list in the modal
+        countSelectedItems(data); // Count selected items
     } catch (error) {
         console.error('Error fetching notifications:', error);
     }
@@ -20,8 +23,10 @@ function updateCarousel(notifications) {
     carouselInner.innerHTML = ''; // Clear existing items
     carouselIndicators.innerHTML = ''; // Clear existing indicators
 
+    let visibleCount = 0;
+
     notifications.forEach((notification, index) => {
-        if (notification.RASN_FLAG === 1) {
+        if (notification.RASN_FLAG === 1 && visibleCount < 4) {
             const newItem = document.createElement('div');
             newItem.classList.add('carousel-item');
             newItem.innerHTML = `
@@ -37,6 +42,8 @@ function updateCarousel(notifications) {
             newIndicator.classList.add('carousel-indicator');
             newIndicator.addEventListener('click', () => showSlide(index));
             carouselIndicators.appendChild(newIndicator);
+
+            visibleCount++;
         }
     });
 
@@ -58,6 +65,9 @@ function updateItemList(notifications) {
         listItem.innerHTML = `
             <input type="checkbox" ${notification.RASN_FLAG === 1 ? 'checked' : ''} data-id="${notification.RASN_ID}">
             <strong>${notification.RASN_TITULO}</strong>
+            <button class="delete-btn" data-id="${notification.RASN_ID}">
+                <i class="fa-solid fa-delete-left"></i>
+            </button>
         `;
         itemList.appendChild(listItem);
     });
@@ -66,12 +76,51 @@ function updateItemList(notifications) {
     document.querySelectorAll('#itemList input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', toggleVisibility);
     });
+
+    // Add event listeners to delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', deleteItem);
+    });
+}
+
+function countSelectedItems(notifications) {
+    selectedCount = notifications.filter(notification => notification.RASN_FLAG === 1).length;
+    console.log(`Número de ítems seleccionados: ${selectedCount}`);
+}
+
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+    `;
+    notificationContainer.appendChild(notification);
+
+    // Remove the notification after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
 }
 
 function toggleVisibility(event) {
     const checkbox = event.target;
     const id = checkbox.getAttribute('data-id');
     const RASN_FLAG = checkbox.checked ? 1 : 0;
+
+    // Check the number of selected items
+    if (RASN_FLAG === 1 && selectedCount >= 4) {
+        showNotification('Solo puedes seleccionar hasta 4 avisos.');
+        checkbox.checked = false;
+        return;
+    }
+
+    if (RASN_FLAG === 1) {
+        selectedCount++;
+    } else {
+        selectedCount--;
+    }
 
     // Get the notification details
     const notificationElement = checkbox.closest('li').querySelector('strong');
@@ -106,6 +155,35 @@ function toggleVisibility(event) {
     })
     .catch(error => {
         console.error('Error updating visibility:', error);
+    });
+}
+
+function deleteItem(event) {
+    const button = event.target.closest('button');
+    const id = button.getAttribute('data-id');
+
+    // Log the URL being used for deletion
+    console.log('Sending delete request to URL:', `${deleteApiUrl}/${id}`);
+
+    // Delete the notification
+    fetch(`${deleteApiUrl}/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Item deleted:', data);
+        fetchNotifications(); // Refresh the carousel and item list
+    })
+    .catch(error => {
+        console.error('Error deleting item:', error);
     });
 }
 
@@ -157,7 +235,7 @@ async function addItem(event) {
         RASN_ICON: icon,
         RASN_TITULO: title,
         RASN_DESCRIPCION: description,
-        RASN_FLAG: 1 // New items are visible by default
+        RASN_FLAG: 0 // New items are not visible by default
     };
 
     try {
@@ -189,13 +267,13 @@ function selectIcon(event) {
     const selectedIcon = event.currentTarget.getAttribute('data-icon');
     document.getElementById('icon').value = selectedIcon;
 
-    // Remove active class from all icons
+    // Remove selected class from all icons
     document.querySelectorAll('.icon-option').forEach(option => {
-        option.classList.remove('active');
+        option.classList.remove('selected');
     });
 
-    // Add active class to the selected icon
-    event.currentTarget.classList.add('active');
+    // Add selected class to the clicked icon
+    event.currentTarget.classList.add('selected');
 }
 
 function logCarouselItems() {
@@ -212,6 +290,25 @@ function updateCharCount() {
     charCount.textContent = `${description.value.length}/512`;
 }
 
+function limitSelection(event) {
+    const selectedIcons = document.querySelectorAll('.icon-option.active');
+    if (selectedIcons.length >= 4 && !event.currentTarget.classList.contains('active')) {
+        showNotification('Solo puedes seleccionar hasta 4 ítems.');
+        event.preventDefault();
+    } else {
+        event.currentTarget.classList.toggle('active');
+    }
+}
+
+function toggleCarouselVisibility(event) {
+    const carousel = document.getElementById('carousel');
+    if (event.target.checked) {
+        carousel.style.display = 'block';
+    } else {
+        carousel.style.display = 'none';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchNotifications(); // Fetch notifications on page load
 
@@ -224,4 +321,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add input event listener to the description textarea
     document.getElementById('description').addEventListener('input', updateCharCount);
+
+    // Add event listener to limit the selection of items
+    document.querySelectorAll('#itemList input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', toggleVisibility);
+    });
+
+    // Add event listener to toggle carousel visibility
+    document.getElementById('toggleCarousel').addEventListener('change', toggleCarouselVisibility);
 });
