@@ -88,10 +88,13 @@ function countSelectedItems(notifications) {
     console.log(`Número de ítems seleccionados: ${selectedCount}`);
 }
 
-function showNotification(message) {
+function showNotification(message, type = '') {
     const notificationContainer = document.getElementById('notification-container');
     const notification = document.createElement('div');
     notification.classList.add('notification');
+    if (type) {
+        notification.classList.add(type);
+    }
     notification.innerHTML = `
         <span>${message}</span>
         <button class="close-btn" onclick="this.parentElement.remove()">×</button>
@@ -111,7 +114,7 @@ function toggleVisibility(event) {
 
     // Check the number of selected items
     if (RASN_FLAG === 1 && selectedCount >= 4) {
-        showNotification('Solo puedes seleccionar hasta 4 avisos.');
+        showNotification('Solo puedes seleccionar hasta 4 avisos.', 'error');
         checkbox.checked = false;
         return;
     }
@@ -217,6 +220,12 @@ function prevSlide() {
     showSlide(currentIndex - 1);
 }
 
+function startAutoSlide() {
+    setInterval(() => {
+        nextSlide();
+    }, 3000); // Change slide every 3 seconds
+}
+
 function openModal() {
     document.getElementById('addItemModal').style.display = 'block';
 }
@@ -230,6 +239,12 @@ async function addItem(event) {
     const icon = document.getElementById('icon').value;
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
+
+    // Validate that all fields are filled
+    if (!icon || !title || !description) {
+        showNotification('Todos los campos son obligatorios.', 'error');
+        return;
+    }
 
     const newItem = {
         RASN_ICON: icon,
@@ -253,6 +268,9 @@ async function addItem(event) {
 
             // Optionally, update the carousel with the new item
             fetchNotifications();
+
+            // Show success notification
+            showNotification('Aviso agregado correctamente.', 'success');
         } else {
             console.error('Error adding item:', response.statusText);
         }
@@ -260,7 +278,8 @@ async function addItem(event) {
         console.error('Error adding item:', error);
     }
 
-    closeModal();
+    // Do not close the modal
+    // closeModal();
 }
 
 function selectIcon(event) {
@@ -293,7 +312,7 @@ function updateCharCount() {
 function limitSelection(event) {
     const selectedIcons = document.querySelectorAll('.icon-option.active');
     if (selectedIcons.length >= 4 && !event.currentTarget.classList.contains('active')) {
-        showNotification('Solo puedes seleccionar hasta 4 ítems.');
+        showNotification('Solo puedes seleccionar hasta 4 ítems.', 'error');
         event.preventDefault();
     } else {
         event.currentTarget.classList.toggle('active');
@@ -329,4 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add event listener to toggle carousel visibility
     document.getElementById('toggleCarousel').addEventListener('change', toggleCarouselVisibility);
+
+    // Start the automatic slide show
+    startAutoSlide();
 });

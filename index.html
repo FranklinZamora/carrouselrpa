@@ -34,7 +34,7 @@
                 <div class="form-container">
                     <h2>Agregar Nuevo Item</h2>
                     <form id="addItemForm">
-                        <label for="icon">Icono:</label>
+                        <label for="icon">Icono: <span class="required">*</span></label>
                         <div class="icon-select">
                             <div class="icon-grid">
                                 <div class="icon-option" data-icon="fas fa-check-circle"><i class="fas fa-check-circle"></i></div>
@@ -47,10 +47,10 @@
                                 <div class="icon-option" data-icon="fa-solid fa-calendar-days"><i class="fa-solid fa-calendar-days"></i></div> <!-- Nuevo icono -->
                             </div>
                         </div>
-                        <input type="hidden" id="icon" name="icon">
-                        <label for="title">Título:</label>
+                        <input type="hidden" id="icon" name="icon" required>
+                        <label for="title">Título: <span class="required">*</span></label>
                         <input type="text" id="title" name="title" placeholder="Título del aviso" required maxlength="100" class="short-input">
-                        <label for="description">Descripción:</label>
+                        <label for="description">Descripción: <span class="required">*</span></label>
                         <textarea id="description" name="description" placeholder="Descripción del aviso" required maxlength="512" class="large-textarea"></textarea>
                         <span id="charCount">0/512</span> <!-- Contador de caracteres -->
                         <div class="button-container">
